@@ -1,0 +1,21 @@
+{
+  "teacher": "A",
+  "seed": 123,
+  "student": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "rank": 8,
+  "alpha": 16,
+  "dropout": 0,
+  "target_modules": [
+    "q_proj",
+    "v_proj"
+  ],
+  "learning_rate": 0.0002,
+  "epochs": 2,
+  "effective_batch_size": 16,
+  "micro_batch_size": 2,
+  "max_length": 512,
+  "weight_decay": 0,
+  "eval_batch_size": 8
+}
+
