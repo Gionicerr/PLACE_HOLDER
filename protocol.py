@@ -35,10 +35,14 @@ def read_split(path, name, stage):
     return rows[:CONFIG["pilot"][name]] if stage == "pilot" else rows
 
 
+def user_prompt(question):
+    return question + "\n\n" + CONFIG["generation"]["instruction"]
+
+
 def chat_prompt(question):
     system = CONFIG["generation"]["system"]
     return (f"<|im_start|>system\n{system}<|im_end|>\n"
-            f"<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant\n")
+            f"<|im_start|>user\n{user_prompt(question)}<|im_end|>\n<|im_start|>assistant\n")
 
 
 def score(response, reference):

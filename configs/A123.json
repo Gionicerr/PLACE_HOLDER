@@ -6,16 +6,14 @@
   "rank": 8,
   "alpha": 16,
   "dropout": 0,
-  "target_modules": [
-    "q_proj",
-    "v_proj"
-  ],
+  "target_modules": "all-linear",
   "learning_rate": 0.0002,
   "epochs": 2,
   "effective_batch_size": 16,
   "micro_batch_size": 2,
   "max_length": 512,
   "weight_decay": 0,
-  "eval_batch_size": 8
+  "eval_batch_size": 8,
+  "lr_scheduler": "linear",
+  "shared_train_commit": "471603698be7955c0b2491454920681279cf1332"
 }
-

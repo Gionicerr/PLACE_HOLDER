@@ -70,11 +70,9 @@ exit /b 0
 
 :stage
 echo ===== %1 =====
-"%RUNPY%" generate.py --stage %1 --teacher A
+"%RUNPY%" generate.py --stage %1
 if errorlevel 1 exit /b 1
 "%RUNPY%" run_a123.py --stage %1 --device cpu
-if errorlevel 1 exit /b 1
-"%RUNPY%" generate.py --stage %1 --teacher B --teacher C
 if errorlevel 1 exit /b 1
 exit /b 0
 

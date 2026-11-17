@@ -53,7 +53,7 @@
     }
   },
   "generation": {
-    "system": "Solve the math problem. Show a short calculation. Finish with a separate line containing #### followed by the final number, with no units or additional text.",
+    "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
     "template": "qwen2.5-chatml",
     "quantization": "Q4_K_M",
     "temperature": 0,
@@ -64,6 +64,7 @@
     "context_length": 2048,
     "generation_seed": 42,
     "backend": "llama-cpp-python",
-    "backend_version": "0.3.19"
+    "backend_version": "0.3.19",
+    "instruction": "Solve the math problem. Show a short calculation. Finish with a separate line containing #### followed by the final number, with no units or additional text."
   }
 }

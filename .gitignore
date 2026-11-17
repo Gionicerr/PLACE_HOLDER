@@ -4,5 +4,4 @@
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
-/.model-cache/
 /data/project_data.zip

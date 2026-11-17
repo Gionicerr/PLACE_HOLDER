@@ -4,9 +4,21 @@ from argparse import Namespace
 from pathlib import Path
 from unittest.mock import Mock
 
-from generate import run_teacher
-from protocol import CONFIG, DATA, chat_prompt, read_json, read_jsonl, read_split, score
-from run_a123 import encode_example, last_complete_checkpoint, teacher_set
+from generate import prepare_sft_files, run_teacher
+from protocol import CONFIG, DATA, chat_prompt, read_json, read_jsonl, read_split, score, user_prompt
+from run_a123 import train_command
+from train import encode_example, load_examples
+
+
+class CharacterTokenizer:
+    def apply_chat_template(self, messages, *, tokenize, add_generation_prompt):
+        prefix = "user:" + messages[0]["content"] + "|assistant:"
+        return prefix if add_generation_prompt else prefix + messages[-1]["content"] + "!"
+
+    def __call__(self, text, *, add_special_tokens, max_length, truncation, return_offsets_mapping):
+        ids = list(map(ord, text[:max_length]))
+        return {"input_ids": ids, "attention_mask": [1] * len(ids),
+                "offset_mapping": [(i, i + 1) for i in range(len(ids))]}
 
 
 class ProtocolTests(unittest.TestCase):
@@ -33,17 +45,18 @@ class ProtocolTests(unittest.TestCase):
                 self.assertEqual(score(bad, "16"), (None, False))
 
     def test_assistant_only_and_truncation(self):
-        tokenizer = Mock(eos_token_id=99)
-        tokenizer.encode.side_effect = lambda s, **kw: [ord(c) for c in s]
-        prompt = chat_prompt("One plus two?")
-        text = "Add the two numbers.\n#### 3"
-        item, cut = encode_example(tokenizer, "One plus two?", text, len(prompt) + 8)
-        self.assertTrue(cut)
-        self.assertEqual(item["labels"][:len(prompt)], [-100] * len(prompt))
-        self.assertEqual(item["labels"][-7:], [ord(c) for c in "#### 3"] + [99])
-        self.assertEqual(len(item["input_ids"]), len(item["labels"]))
+        tokenizer = CharacterTokenizer()
+        prompt = user_prompt("One plus two?")
+        prefix = tokenizer.apply_chat_template([{"role": "user", "content": prompt}],
+                                               tokenize=False, add_generation_prompt=True)
+        text = "Add the numbers.\n#### 3"
+        item = encode_example(tokenizer, prompt, text, 512)
+        self.assertEqual(item["labels"][:len(prefix)], [-100] * len(prefix))
+        self.assertEqual(item["labels"][len(prefix):], list(map(ord, text + "!")))
+        clipped = encode_example(tokenizer, prompt, text, len(prefix) + 5)
+        self.assertEqual(clipped["labels"][-5:], list(map(ord, "Add t")))
         with self.assertRaises(ValueError):
-            encode_example(tokenizer, "One plus two?", text, len(prompt))
+            encode_example(tokenizer, prompt, text, len(prefix))
 
     def test_resume_assembly_and_teacher_handoff(self):
         sources = [{"id": "fixture_0", "question": "First fixture?", "reference_answer": "123456"},
@@ -69,27 +82,36 @@ class ProtocolTests(unittest.TestCase):
             args.assemble = True
             run_teacher(args, "A", sources, Mock(side_effect=AssertionError("Model loaded on resume")))
             out = dest / "pilot" / "teacher_A.jsonl"
-            self.assertEqual(teacher_set(out, sources), read_jsonl(out))
+            self.assertEqual([r["question"] for r in read_jsonl(out)], [r["question"] for r in sources])
             self.assertEqual(read_json(dest / "pilot" / "teacher_A.metrics.json")["accuracy"], 0.5)
+            args.assemble = False
+            run_teacher(args, "B", sources, loader)
+            # C produces one empty response. All three SFT inputs must drop the same ID.
+            answered = model.create_completion.return_value
+            model.create_completion.side_effect = [answered, {"choices": [{"text": "", "finish_reason": "stop"}],
+                                                            "usage": {"completion_tokens": 0}}]
+            run_teacher(args, "C", sources, loader)
+            aligned = prepare_sft_files(dest / "pilot", sources)
+            self.assertEqual(aligned["excluded_empty_ids"], ["fixture_1"])
+            for teacher in "ABC":
+                sft = dest / "pilot" / "sft" / f"teacher_{teacher}.jsonl"
+                self.assertEqual([r["prompt_id"] for r in read_jsonl(sft)], ["fixture_0"])
+                self.assertEqual(len(load_examples(sft, CharacterTokenizer(), 512)), 1)
             with self.assertRaises(ValueError):
-                teacher_set(out, list(reversed(sources)))
+                prepare_sft_files(dest / "pilot", list(reversed(sources)))
             with self.assertRaises(ValueError):
-                teacher_set(out, sources[:1])
+                prepare_sft_files(dest / "pilot", sources[:1])
             args.threads = 8
             with self.assertRaises(ValueError):
                 run_teacher(args, "A", sources, loader)
 
-    def test_incomplete_checkpoint_is_not_resumed(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            older, newer = root / "checkpoint-10", root / "checkpoint-20"
-            older.mkdir()
-            newer.mkdir()
-            for name in ("trainer_state.json", "optimizer.pt", "scheduler.pt", "rng_state.pth",
-                         "adapter_model.safetensors", "adapter_config.json"):
-                (older / name).touch()
-            (newer / "trainer_state.json").touch()
-            self.assertEqual(last_complete_checkpoint(root), str(older))
+    def test_personal_run_uses_team_entry_point(self):
+        command = train_command(Path("train.jsonl"), Path("val.jsonl"), Path("out"), "cpu")
+        self.assertEqual(Path(command[1]).name, "train.py")
+        for flag, expected in (("--seed", "123"), ("--model", "Qwen/Qwen2.5-0.5B-Instruct"),
+                               ("--epochs", "2"), ("--batch-size", "2"), ("--gradient-accumulation-steps", "8")):
+            self.assertEqual(command[command.index(flag) + 1], expected)
+        self.assertIn("--cpu", command)
 
 
 if __name__ == "__main__":

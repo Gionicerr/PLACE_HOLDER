@@ -9,7 +9,7 @@ import time
 from importlib.metadata import version
 from pathlib import Path
 
-from protocol import CONFIG, DATA, chat_prompt, read_json, read_split, save_json, save_jsonl, score
+from protocol import CONFIG, DATA, chat_prompt, read_json, read_jsonl, read_split, save_json, save_jsonl, score, user_prompt
 
 
 def settings(teacher, threads, gpu_layers):
@@ -55,7 +55,7 @@ def generate_one(model, cfg, row, teacher):
     choice = result["choices"][0]
     response = choice["text"].strip()
     extracted, correct = score(response, row["reference_answer"])
-    return {"prompt_id": row["id"], "prompt": row["question"], "teacher_id": teacher,
+    return {"prompt_id": row["id"], "question": row["question"], "prompt": user_prompt(row["question"]), "teacher_id": teacher,
             "response": response, "reference_answer": row["reference_answer"],
             "generation_config": cfg, "extracted_answer": extracted, "is_correct": correct,
             "response_tokens": result["usage"]["completion_tokens"],
@@ -63,8 +63,8 @@ def generate_one(model, cfg, row, teacher):
 
 
 def validate_record(record, source, teacher, cfg):
-    expected = (source["id"], source["question"], source["reference_answer"], teacher, cfg)
-    actual = tuple(record[k] for k in ("prompt_id", "prompt", "reference_answer", "teacher_id", "generation_config"))
+    expected = (source["id"], source["question"], user_prompt(source["question"]), source["reference_answer"], teacher, cfg)
+    actual = tuple(record[k] for k in ("prompt_id", "question", "prompt", "reference_answer", "teacher_id", "generation_config"))
     if actual != expected:
         raise ValueError(f"{source['id']}: cached row belongs to a different input or run")
     extracted, correct = score(record["response"], source["reference_answer"])
@@ -123,6 +123,40 @@ def run_teacher(args, teacher, sources, model_loader=load_teacher):
         print(f"Teacher {teacher}: {metrics['correct']}/{metrics['n']} correct, {metrics['invalid']} invalid", flush=True)
 
 
+
+def prepare_sft_files(folder, sources):
+    """Use the same prompt IDs for all Teachers; the team trainer requires nonempty responses."""
+    datasets = {}
+    execution = None
+    for teacher in CONFIG["teachers"]:
+        rows = read_jsonl(folder / f"teacher_{teacher}.jsonl")
+        if len(rows) != len(sources):
+            raise ValueError(f"Teacher {teacher}: incomplete or extra train rows")
+        backend = rows[0]["generation_config"]
+        runtime = (backend["threads"], backend["gpu_layers"])
+        if execution is not None and runtime != execution:
+            raise ValueError("Teacher execution settings differ")
+        execution = runtime
+        cfg = settings(teacher, *runtime)
+        for row, source in zip(rows, sources):
+            validate_record(row, source, teacher, cfg)
+        datasets[teacher] = rows
+
+    keep = [i for i in range(len(sources)) if all(rows[i]["response"].strip() for rows in datasets.values())]
+    if not keep:
+        raise ValueError("No common nonempty training responses")
+    keep_ids = {sources[i]["id"] for i in keep}
+    out = folder / "sft"
+    for teacher, rows in datasets.items():
+        save_jsonl(out / f"teacher_{teacher}.jsonl",
+                   [{key: rows[i][key] for key in ("prompt_id", "prompt", "response")} for i in keep])
+    manifest = {"n_original": len(sources), "n_sft": len(keep),
+                "included_ids": [sources[i]["id"] for i in keep],
+                "excluded_empty_ids": [r["id"] for r in sources if r["id"] not in keep_ids]}
+    save_json(out / "alignment.json", manifest)
+    return manifest
+
+
 def shard_arg(value):
     try:
         index, count = (int(part) for part in value.split("/"))
@@ -149,6 +183,9 @@ def main():
     sources = read_split(args.data, "train", args.stage)
     for teacher in args.teacher or CONFIG["teachers"]:
         run_teacher(args, teacher, sources)
+    folder = args.output / args.stage
+    if args.shard == (0, 1) and all((folder / f"teacher_{t}.jsonl").exists() for t in CONFIG["teachers"]):
+        prepare_sft_files(folder, sources)
 
 
 if __name__ == "__main__":
