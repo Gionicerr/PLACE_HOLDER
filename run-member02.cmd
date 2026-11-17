@@ -10,7 +10,8 @@ if not defined MODE set "MODE=both"
 if /i "%MODE%"=="pilot" goto :data
 if /i "%MODE%"=="full" goto :data
 if /i "%MODE%"=="both" goto :data
-echo Usage: run-member02.cmd [pilot^|full^|both]
+if /i "%MODE%"=="b42" goto :data
+echo Usage: run-member02.cmd [pilot^|full^|both^|b42]
 exit /b 2
 
 :data
@@ -53,6 +54,7 @@ echo Checking inputs and preparing the local CPU environment...
 if errorlevel 1 goto :failed
 "%RUNPY%" -m pip install --only-binary=:all: --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu -r requirements-teacher.txt
 if errorlevel 1 goto :failed
+if /i "%MODE%"=="b42" goto :b42files
 "%RUNPY%" -m pip install --only-binary=:all: --index-url https://download.pytorch.org/whl/cpu torch==2.7.1
 if errorlevel 1 goto :failed
 "%RUNPY%" -m pip install --only-binary=:all: -r requirements-a123.txt
@@ -66,6 +68,16 @@ call :stage full
 if errorlevel 1 goto :failed
 :done
 echo Finished. Results are in the runs folder.
+exit /b 0
+
+:b42files
+for %%S in (pilot full) do (
+    "%RUNPY%" generate.py --stage %%S --teacher B --teacher A --teacher C
+    if errorlevel 1 goto :failed
+    "%RUNPY%" -c "from pathlib import Path; from protocol import atomic_text; root = Path('runs'); src = root / '%%S' / 'sft' / 'teacher_B.jsonl'; atomic_text(root / 'B42_to_send' / 'teacher_B_%%S.jsonl', src.read_text(encoding='utf-8'))"
+    if errorlevel 1 goto :failed
+    echo Ready to send: "%CD%\runs\B42_to_send\teacher_B_%%S.jsonl"
+)
 exit /b 0
 
 :stage
