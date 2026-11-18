@@ -1,18 +1,43 @@
-# Ответы Teacher B для B42
+# B42 · обучение на ответах Teacher B
 
-[**Скачать пилот Teacher B для проверки формата (100 строк)**](teacher_B_pilot_check.jsonl?raw=1)
+[**Скачать ветку одним ZIP**](https://github.com/Gionicerr/PLACE_HOLDER/archive/refs/heads/task2/teacher-generation-a-seed123.zip). В архиве лежат оба JSONL, общий `train.py` и команды запуска. Распакуйте ZIP и откройте терминал в папке с `train.py`.
 
-Пилот прошёл итоговую сверку. Все 100 ID и их порядок совпали у Teacher A, B и C. Опубликованный файл побайтово совпадает с итоговым пилотом для `train.py`. SHA-256 — `d51bbee9b6bc51d991b30e7d909ab541a08b81d640b69dd5079bc953ffe337f1`.
+| Набор | Строк | Скачать отдельно |
+| --- | ---: | --- |
+| Пилот для проверки и пробного обучения | 100 | [teacher_B_pilot.jsonl](https://raw.githubusercontent.com/Gionicerr/PLACE_HOLDER/task2/teacher-generation-a-seed123/B42/teacher_B_pilot.jsonl) |
+| Полный train для B42 | 1 000 | [teacher_B_full.jsonl](https://raw.githubusercontent.com/Gionicerr/PLACE_HOLDER/task2/teacher-generation-a-seed123/B42/teacher_B_full.jsonl) |
 
-[Скачать первые 10 ответов в JSONL](teacher_B_preview_10.jsonl?raw=1) · [Посмотреть строки на GitHub](teacher_B_preview_10.jsonl)
+Пилот — первые 100 строк полного набора. Если уже скачан `teacher_B_pilot_check.jsonl`, это тот же файл. Каждая строка содержит `prompt_id`, `prompt` и `response`. Ответы сгенерировала Qwen2.5-3B-Instruct (GGUF Q4_K_M). ID и порядок задач проверены по всем трём Teacher.
 
-Эти 10 ответов уже можно использовать для проверки загрузки данных в `train.py`. Модель Qwen2.5-3B-Instruct (GGUF Q4_K_M) сгенерировала их для задач `train_0000`–`train_0009` на ноутбуке. В каждой строке есть `prompt_id`, `prompt` и `response`. Текст ответа сохранён целиком, в том числе когда модель дошла до лимита токенов. Файл прошёл проверку чтения полей через `train.load_examples`. SHA-256 файла — `17f5adddb2f9a4b97815376ef6e3d18fb61514a7d05d98614956f09e55c0d6ba`.
+## Проверка данных
 
-| Файл | Для чего | Готовность |
-| --- | --- | --- |
-| `runs/pilot/sft/teacher_B.jsonl` | Проверка на пилоте из первых 100 задач | Проверены все 100 задач. Готовый файл доступен по ссылке выше. |
-| `runs/full/sft/teacher_B.jsonl` | Обучение B42 на полном train из 1 000 задач | Готовы 1 000 строк. В рабочей копии участника № 2 файл для передачи лежит в `runs/B42_to_send/teacher_B_full.jsonl`. |
+Достаточно Python. Каждая команда проверяет число строк, порядок ID, непустые поля и SHA-256 файла.
 
-Генерация завершилась 18 ноября в 13:44 мск. Все три Teacher дали непустые ответы на одни и те же 1 000 задач в одинаковом порядке. Оба файла Teacher B прошли проверку чтения полей общим `train.py`. SHA-256 полного файла — `df52c93bfbed4a93d4eec55b6a18c60713b025fa9146e615d0076c4a1df3ab8d`. Статус передачи полного файла указан в [PR № 1](https://github.com/Gionicerr/PLACE_HOLDER/pull/1). Значение `--seed 42` относится к запуску Student у участника B42.
+```sh
+python -m B42.run pilot --check
+python -m B42.run full --check
+```
 
-Условия задач взяты из подготовленной командой выборки GSM8K. [Репозиторий исходных задач](https://github.com/openai/grade-school-math) · [Лицензия MIT](GSM8K-LICENSE.txt)
+## Обучение
+
+В активном окружении Python 3.11 или 3.12 установите зависимости общего тренера. При первом запуске обучения понадобится интернет для загрузки Student. Ответы Teacher уже лежат в архиве.
+
+```sh
+python -m pip install -r requirements-a123.txt
+python -m B42.run smoke
+python -m B42.run full
+```
+
+`smoke` выполняет один шаг оптимизатора на пилотных данных. `pilot` обучает на всех 100 примерах две эпохи. `full` запускает независимое обучение на 1 000 примерах с исходного checkpoint. Для полного запуска можно сразу выполнить последнюю команду.
+
+Все режимы вызывают командный [train.py](../train.py) с `seed=42`. Student — `Qwen/Qwen2.5-0.5B-Instruct`, ревизия `7ae557604adf67be50417f59c2c2f167def9a775`. Полный запуск использует две эпохи, LoRA rank 8, alpha 16, learning rate 0.0002 и длину до 512 токенов. На одном устройстве эффективный размер батча равен 16.
+
+Если нужен validation loss, передайте архив участника № 1 при запуске. Для полного набора используются 150 валидационных задач, для пилота — 30.
+
+```sh
+python -m B42.run full --data data/project_data.zip
+```
+
+После полного запуска адаптер появится в `runs/B42/full/adapter/`, метрики — в `runs/B42/full/run_results.json`, параметры запуска — в `runs/B42/full/run_config.json`. Для повтора укажите новую папку через `--output-dir`. Для принудительного запуска на CPU добавьте `--cpu`.
+
+Условия задач взяты из командной выборки GSM8K. [Исходные задачи](https://github.com/openai/grade-school-math) · [Лицензия MIT](GSM8K-LICENSE.txt)
