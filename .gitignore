@@ -1,0 +1,7 @@
+/runs/
+/.venv/
+/.model-cache/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+/data/project_data.zip

@@ -1,0 +1,70 @@
+{
+  "data": {
+    "train": {
+      "count": 1000,
+      "sha256": "9ccdd23c6ca96c67c9afbeb18f6b3cd0ec042da875b089dc55773f0df5df69da"
+    },
+    "validation": {
+      "count": 150,
+      "sha256": "335de84f2e6804b806bf2e92dbd0fe07effdaeeac0b35454cbc0df510592b797"
+    },
+    "test": {
+      "count": 200,
+      "sha256": "d615995981e42a14e132cba14974637668c6344a356fee953584b658225fe138"
+    }
+  },
+  "pilot": {
+    "train": 100,
+    "validation": 30,
+    "test": 30
+  },
+  "teachers": {
+    "A": {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "gguf_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "files": [
+        "qwen2.5-1.5b-instruct-q4_k_m.gguf"
+      ],
+      "sha256": [
+        "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+      ]
+    },
+    "B": {
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "gguf_revision": "7dabda4d13d513e3e842b20f0d435c732f172cbe",
+      "files": [
+        "qwen2.5-3b-instruct-q4_k_m.gguf"
+      ],
+      "sha256": [
+        "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
+      ]
+    },
+    "C": {
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "gguf_revision": "bb5d59e06d9551d752d08b292a50eb208b07ab1f",
+      "files": [
+        "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+        "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf"
+      ],
+      "sha256": [
+        "dfce12e3862a5283ccfb88221b48480e58745165de856439950d0f22590580db",
+        "539cf93f78e887edea1c04e2d7d8cdaca9d01dae9c9025bcb8accbe29df3d72a"
+      ]
+    }
+  },
+  "generation": {
+    "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+    "template": "qwen2.5-chatml",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "top_p": 1,
+    "top_k": 0,
+    "repeat_penalty": 1,
+    "max_new_tokens": 192,
+    "context_length": 2048,
+    "generation_seed": 42,
+    "backend": "llama-cpp-python",
+    "backend_version": "0.3.19",
+    "instruction": "Solve the math problem. Show a short calculation. Finish with a separate line containing #### followed by the final number, with no units or additional text."
+  }
+}
