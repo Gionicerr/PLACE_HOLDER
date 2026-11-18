@@ -1,0 +1,16 @@
+{
+    "epoch": 2.0,
+    "eval_loss": 2.8204269409179688,
+    "eval_runtime": 10.6528,
+    "eval_samples_per_second": 14.081,
+    "eval_steps_per_second": 7.04,
+    "peak_cuda_memory_allocated_bytes": 5705299968,
+    "total_flos": 1297266047820288.0,
+    "train_loss": 0.23054022495708767,
+    "train_runtime": 538.0793,
+    "train_samples": 1000,
+    "train_samples_per_second": 3.717,
+    "train_steps_per_second": 0.234,
+    "train_time_seconds": 538.607633394,
+    "validation_samples": 150
+}
