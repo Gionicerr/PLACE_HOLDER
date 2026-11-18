@@ -1,6 +1,8 @@
 # B42 · обучение на ответах Teacher B
 
-[**Скачать ветку одним ZIP**](https://github.com/Gionicerr/PLACE_HOLDER/archive/refs/heads/task2/teacher-generation-a-seed123.zip). В архиве лежат оба JSONL, общий `train.py` и команды запуска. Распакуйте ZIP и откройте терминал в папке с `train.py`.
+[**Скачать B42-project.zip**](https://raw.githubusercontent.com/Gionicerr/PLACE_HOLDER/task2/teacher-generation-a-seed123/B42/B42-project.zip) · [Открыть страницу файла на GitHub](https://github.com/Gionicerr/PLACE_HOLDER/blob/task2/teacher-generation-a-seed123/B42/B42-project.zip)
+
+В архиве лежат оба JSONL, общий `train.py` и код проекта. Распакуйте ZIP и откройте терминал в папке с `train.py`. Со страницы файла архив можно скачать кнопкой **Download raw file**.
 
 | Набор | Строк | Скачать отдельно |
 | --- | ---: | --- |
