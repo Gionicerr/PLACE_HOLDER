@@ -6,7 +6,6 @@
 
 [Блокнот Colab](04_evaluate.ipynb) · [Инструкция](README-member-04.md) · [Метрики и разбор](results/member-04/notes.md) · [Адаптер и логи B123](results/B123/README.md)
 
-
 ## Общее обучение Student
 
 Все участники запускают [train.py](train.py) с одним исходным checkpoint Student. Для каждого эксперимента укажи файл ответов своего Teacher, seed и отдельную папку результатов.
