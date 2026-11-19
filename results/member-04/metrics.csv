@@ -1,0 +1,4 @@
+model,split,stage,seed,n,correct,accuracy,delta_pp,wrong_number,invalid,invalid_format_rate,token_limit_count,response_tokens_mean,response_tokens_median,response_tokens_max,train_time_seconds,inference_seconds
+baseline,test,full,,200,0,0.0,0.0,1,199,0.995,161,175.07,192.0,192,,115.162
+B42,test,full,42,200,74,0.37,37.0,53,73,0.365,73,151.525,163.5,192,538.607633394,248.53
+B123,test,full,123,200,68,0.34,34.0,56,76,0.38,74,154,168.0,192,1357.2925201999997,276.294

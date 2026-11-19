@@ -1,0 +1,73 @@
+{
+  "protocol": {
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "split": "test",
+    "stage": "full",
+    "source_split_sha256": "d615995981e42a14e132cba14974637668c6344a356fee953584b658225fe138",
+    "prompt_system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+    "prompt_instruction": "Solve the math problem. Show a short calculation. Finish with a separate line containing #### followed by the final number, with no units or additional text.",
+    "decoding": "greedy",
+    "max_new_tokens": 192,
+    "batch_size": 8,
+    "dtype": "float32",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5060",
+    "versions": {
+      "torch": "2.7.1+cu128",
+      "transformers": "4.53.3",
+      "peft": "0.16.0",
+      "accelerate": "1.8.1"
+    }
+  },
+  "models": {
+    "baseline": {
+      "n": 200,
+      "correct": 0,
+      "accuracy": 0.0,
+      "wrong_number": 1,
+      "invalid": 199,
+      "invalid_format_rate": 0.995,
+      "token_limit_count": 161,
+      "response_tokens_mean": 175.07,
+      "response_tokens_median": 192.0,
+      "response_tokens_max": 192,
+      "inference_seconds": 115.162,
+      "delta_pp": 0.0
+    },
+    "B42": {
+      "n": 200,
+      "correct": 74,
+      "accuracy": 0.37,
+      "wrong_number": 53,
+      "invalid": 73,
+      "invalid_format_rate": 0.365,
+      "token_limit_count": 73,
+      "response_tokens_mean": 151.525,
+      "response_tokens_median": 163.5,
+      "response_tokens_max": 192,
+      "adapter_sha256": "309d536d5c0ba13ce378e71841c682970f3b71505165a7397d334a643b914c54",
+      "seed": 42,
+      "train_time_seconds": 538.607633394,
+      "inference_seconds": 248.53,
+      "delta_pp": 37.0
+    },
+    "B123": {
+      "n": 200,
+      "correct": 68,
+      "accuracy": 0.34,
+      "wrong_number": 56,
+      "invalid": 76,
+      "invalid_format_rate": 0.38,
+      "token_limit_count": 74,
+      "response_tokens_mean": 154,
+      "response_tokens_median": 168.0,
+      "response_tokens_max": 192,
+      "adapter_sha256": "a232400833c95577c6aaba379859bf08e7aaa117cd5f55d77e1f4c0caff8c409",
+      "seed": 123,
+      "train_time_seconds": 1357.2925201999997,
+      "inference_seconds": 276.294,
+      "delta_pp": 34.0
+    }
+  }
+}
