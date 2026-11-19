@@ -1,0 +1,13 @@
+{
+  "teacher": "B",
+  "teacher_sft_sha256": "df52c93bfbed4a93d4eec55b6a18c60713b025fa9146e615d0076c4a1df3ab8d",
+  "train_split": {
+    "count": 1000,
+    "sha256": "9ccdd23c6ca96c67c9afbeb18f6b3cd0ec042da875b089dc55773f0df5df69da"
+  },
+  "validation_split": {
+    "count": 150,
+    "sha256": "335de84f2e6804b806bf2e92dbd0fe07effdaeeac0b35454cbc0df510592b797"
+  },
+  "formatted_validation_sha256": "56c66cb6fd863fddca6f9b0e4cc3d240d03c6e9d7509d2d58d47e218a45adda7"
+}
