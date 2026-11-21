@@ -1,0 +1,45 @@
+{
+  "teacher_id": "B",
+  "stage": "pilot",
+  "train_sha256": "9ccdd23c6ca96c67c9afbeb18f6b3cd0ec042da875b089dc55773f0df5df69da",
+  "generation_config": {
+    "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+    "template": "qwen2.5-chatml",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "top_p": 1,
+    "top_k": 0,
+    "repeat_penalty": 1,
+    "max_new_tokens": 192,
+    "context_length": 2048,
+    "generation_seed": 42,
+    "backend": "llama-cpp-python",
+    "backend_version": "0.3.19",
+    "instruction": "Solve the math problem. Show a short calculation. Finish with a separate line containing #### followed by the final number, with no units or additional text.",
+    "model": "Qwen/Qwen2.5-3B-Instruct",
+    "gguf_repo": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+    "revision": "7dabda4d13d513e3e842b20f0d435c732f172cbe",
+    "files": [
+      "qwen2.5-3b-instruct-q4_k_m.gguf"
+    ],
+    "sha256": [
+      "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
+    ],
+    "threads": 4,
+    "gpu_layers": 0
+  },
+  "n": 100,
+  "correct": 71,
+  "accuracy": 0.71,
+  "invalid": 24,
+  "invalid_format_rate": 0.24,
+  "length_limited": 20,
+  "response_tokens": {
+    "mean": 138.82,
+    "p50": 137.0,
+    "p95": 192,
+    "min": 53,
+    "max": 192
+  },
+  "summed_generation_seconds": 1273.7868306001183
+}

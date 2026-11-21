@@ -1,5 +1,7 @@
 # PLACE_HOLDER
 
+Готовые ответы для обучения Student — [Teacher C, 1 000 задач](data/teachers/full/sft/teacher_C.jsonl), [пилот Teacher C, 100 задач](data/teachers/pilot/sft/teacher_C.jsonl) и [все наборы A, B и C с метриками](data/teachers/README.md).
+
 ## Общее обучение Student
 
 Все участники запускают [train.py](train.py) с одним исходным checkpoint Student. Для каждого эксперимента укажи файл ответов своего Teacher, seed и отдельную папку результатов.
@@ -14,7 +16,7 @@ python -m pip install -r requirements.txt
 
 ```bash
 python train.py \
-  --train-file data/teacher_B_full.jsonl \
+  --train-file data/teachers/full/sft/teacher_B.jsonl \
   --model Qwen/Qwen2.5-0.5B-Instruct \
   --revision 7ae557604adf67be50417f59c2c2f167def9a775 \
   --seed 42 \
@@ -99,7 +101,7 @@ run-member02.cmd full
 | `baseline.predictions.jsonl`, `student.predictions.jsonl` | Предсказания обеих моделей и проверка каждой задачи |
 | `metrics.json`, `notes.md` | Метрики, изменение к baseline и краткая заметка по фактическим результатам |
 
-Пилот сохраняется отдельно в `runs/pilot/`. Датасеты, адаптер и результаты появляются после вычислений. Для личного журнала участник указывает дату своего запуска и ссылку на его результаты.
+Пилот сохраняется отдельно в `runs/pilot/`. Готовые датасеты и метрики Teacher опубликованы в [data/teachers](data/teachers/README.md). Личный запуск A123 сохраняет адаптер и результаты оценки в `runs/`. Для личного журнала участник указывает дату своего запуска и ссылку на его результаты.
 
 ### Запуск по этапам
 
