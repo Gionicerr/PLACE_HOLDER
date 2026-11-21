@@ -1,0 +1,140 @@
+{
+  "description": "Verified snapshot of the existing GSM8K inputs and Teacher A/B/C generation outputs.",
+  "generation_completed_on": "2026-11-18",
+  "verified_on": "2026-11-21",
+  "raw_cache_records_verified": 3000,
+  "files": [
+    {
+      "path": "data/project_data.zip",
+      "bytes": 127925,
+      "sha256": "554cac5e2965304bd9785fcc389998cc78bc0f44d631ace1ae1cd024d90e24e0"
+    },
+    {
+      "path": "data/teachers/full/raw.zip",
+      "bytes": 755736,
+      "sha256": "72f5a9c08d39b53f9fe5f79b2b8d3e88bab06688badb30b7d0100e43b702fe61"
+    },
+    {
+      "path": "data/teachers/full/sft/alignment.json",
+      "bytes": 18094,
+      "sha256": "9eb2a75757d7f6a4133312943ae275e1d79d6c98950718fbfaab40312af2e2ce"
+    },
+    {
+      "path": "data/teachers/full/sft/teacher_A.jsonl",
+      "bytes": 867182,
+      "sha256": "7ce0b44765bc598887f64a79b0a92c6fe8574212aad4d058cb86fc17c88c331e",
+      "rows": 1000
+    },
+    {
+      "path": "data/teachers/full/sft/teacher_B.jsonl",
+      "bytes": 912857,
+      "sha256": "df52c93bfbed4a93d4eec55b6a18c60713b025fa9146e615d0076c4a1df3ab8d",
+      "rows": 1000
+    },
+    {
+      "path": "data/teachers/full/sft/teacher_C.jsonl",
+      "bytes": 747716,
+      "sha256": "909b593992918335bc62d7c12eabe841ee3da56b9300048dbde05d8660eee938",
+      "rows": 1000
+    },
+    {
+      "path": "data/teachers/full/teacher_A.jsonl",
+      "bytes": 2132096,
+      "sha256": "1ba122b20578a6fc55349b8598dc3213cbb743e0aa59921c7d0a89edfe3d3853",
+      "rows": 1000
+    },
+    {
+      "path": "data/teachers/full/teacher_A.metrics.json",
+      "bytes": 1361,
+      "sha256": "ac1bb47221c7440705399e98333163d7dfd151e211e4bbcd4364c9c491dedb70"
+    },
+    {
+      "path": "data/teachers/full/teacher_B.jsonl",
+      "bytes": 2172179,
+      "sha256": "8c908127408d5d602a7c3cffdd58eeebe635cfb5a79b74d9f094ea2d8df902a5",
+      "rows": 1000
+    },
+    {
+      "path": "data/teachers/full/teacher_B.metrics.json",
+      "bytes": 1356,
+      "sha256": "7fbde885b1c90452c50a616b9de47f18a8be4635faaf4857a76dab8f785db10f"
+    },
+    {
+      "path": "data/teachers/full/teacher_C.jsonl",
+      "bytes": 2139227,
+      "sha256": "b1a70fa25b677fccf18f1c3ba57e3a01b52a28e9f6781174a0f83eff79d8d4e8",
+      "rows": 1000
+    },
+    {
+      "path": "data/teachers/full/teacher_C.metrics.json",
+      "bytes": 1496,
+      "sha256": "f7319920c31893708b093222ec846b9264aac09ed4a62fcfe8daf2c2f62a2cef"
+    },
+    {
+      "path": "data/teachers/GSM8K-LICENSE.txt",
+      "bytes": 1063,
+      "sha256": "893951b3bf94db8df1b13e05da5cdeb499400960e4d44a3962a8b33ed0b4f28e"
+    },
+    {
+      "path": "data/teachers/pilot/raw.zip",
+      "bytes": 77433,
+      "sha256": "0212c934bb6eedf42ceaa1bbe08587d0583156d75d65534cd9acf080ffac8968"
+    },
+    {
+      "path": "data/teachers/pilot/sft/alignment.json",
+      "bytes": 1892,
+      "sha256": "4ba6c4f2c0c546715e576df460561697e9579125ef005625c27396d6fa098ccd"
+    },
+    {
+      "path": "data/teachers/pilot/sft/teacher_A.jsonl",
+      "bytes": 87202,
+      "sha256": "b702506e888d5bcf9dab8833dc59dee4fedb8fe62c23bf0a5cc97e8e07389997",
+      "rows": 100
+    },
+    {
+      "path": "data/teachers/pilot/sft/teacher_B.jsonl",
+      "bytes": 89464,
+      "sha256": "d51bbee9b6bc51d991b30e7d909ab541a08b81d640b69dd5079bc953ffe337f1",
+      "rows": 100
+    },
+    {
+      "path": "data/teachers/pilot/sft/teacher_C.jsonl",
+      "bytes": 74695,
+      "sha256": "7ce58cd49cf4947b1e94e5ab350c1fc54a2088d4815c7c67f35d39c1651562a2",
+      "rows": 100
+    },
+    {
+      "path": "data/teachers/pilot/teacher_A.jsonl",
+      "bytes": 213423,
+      "sha256": "a8082340bf8ab9ef6708e38a9d596216c0edcc7a7b24e35ca99b738229ea054c",
+      "rows": 100
+    },
+    {
+      "path": "data/teachers/pilot/teacher_A.metrics.json",
+      "bytes": 1355,
+      "sha256": "d21382a71e1e336d09c5c6f974346f5983a6500bbeb92756fc25aad7a19eb854"
+    },
+    {
+      "path": "data/teachers/pilot/teacher_B.jsonl",
+      "bytes": 215086,
+      "sha256": "2be33f1898a59da8e62c0fd7fdb5bc20f24f4d017a856bd679b28d439bbe470d",
+      "rows": 100
+    },
+    {
+      "path": "data/teachers/pilot/teacher_B.metrics.json",
+      "bytes": 1350,
+      "sha256": "bb92d92a0a10a270fdedf4a39235d7a88e4d1acb16a3f8ef7862b8311dbc74db"
+    },
+    {
+      "path": "data/teachers/pilot/teacher_C.jsonl",
+      "bytes": 213570,
+      "sha256": "684259fd7d035aa8d814640496e4465bc7e64ff9a1d1b77090c229add7390a73",
+      "rows": 100
+    },
+    {
+      "path": "data/teachers/pilot/teacher_C.metrics.json",
+      "bytes": 1492,
+      "sha256": "f974a33729e13a66e889a963b31a952d3ac1a7b9d4498b21b0293065229b1598"
+    }
+  ]
+}
