@@ -1,6 +1,6 @@
 # B42 — Student на ответах Teacher B
 
-[Повторный запуск от 22 ноября 2026 года](rerun/) сохранён отдельно. Для оценки повторного запуска загружай адаптер из `results/B42/rerun/adapter`.
+[Повторный запуск от 22 ноября 2026 года](rerun/) входит в [актуальную тройку A42, B42 и C42](../README.md). Для новой оценки загружай адаптер из `results/B42/rerun/adapter`. Адаптер первого запуска от 18 ноября находится в `results/B42/adapter`. Именно его использовали для оценки B42 в [PR № 2](https://github.com/Gionicerr/PLACE_HOLDER/pull/2).
 
 Участник № 3 обучил `Qwen/Qwen2.5-0.5B-Instruct` с `seed=42` на 1 000 ответах Teacher B (`Qwen2.5-3B-Instruct`, GGUF Q4_K_M). Для обучения использовался общий [train.py](../../train.py), для входных данных и запуска — [пакет B42 из ветки участника № 2](https://github.com/Gionicerr/PLACE_HOLDER/tree/bae8237b5782fda37563dccb86254858a620e1a1/B42).
 
@@ -35,7 +35,7 @@ Train loss измерялся на полных ответах Teacher B, а val
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-adapter = "results/B42/adapter"
+adapter = "results/B42/rerun/adapter"
 tokenizer = AutoTokenizer.from_pretrained(adapter, padding_side="left")
 base = AutoModelForCausalLM.from_pretrained(
     "Qwen/Qwen2.5-0.5B-Instruct",
