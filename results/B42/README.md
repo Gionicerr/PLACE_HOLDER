@@ -1,5 +1,7 @@
 # B42 — Student на ответах Teacher B
 
+[Повторный запуск от 22 ноября 2026 года](rerun/) сохранён отдельно. Для оценки повторного запуска загружай адаптер из `results/B42/rerun/adapter`.
+
 Участник № 3 обучил `Qwen/Qwen2.5-0.5B-Instruct` с `seed=42` на 1 000 ответах Teacher B (`Qwen2.5-3B-Instruct`, GGUF Q4_K_M). Для обучения использовался общий [train.py](../../train.py), для входных данных и запуска — [пакет B42 из ветки участника № 2](https://github.com/Gionicerr/PLACE_HOLDER/tree/bae8237b5782fda37563dccb86254858a620e1a1/B42).
 
 | Показатель | Результат |
