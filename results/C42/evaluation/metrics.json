@@ -1,0 +1,32 @@
+{
+  "experiment": "C42",
+  "teacher": "C",
+  "seed": 42,
+  "student_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "test_size": 200,
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 192,
+    "batch_size": 8
+  },
+  "baseline": {
+    "correct": 0,
+    "total": 200,
+    "accuracy": 0.0,
+    "accuracy_percent": 0.0,
+    "invalid_format": 199,
+    "invalid_format_rate": 0.995,
+    "runtime_seconds": 186.98943567276
+  },
+  "student": {
+    "correct": 71,
+    "total": 200,
+    "accuracy": 0.355,
+    "accuracy_percent": 35.5,
+    "invalid_format": 46,
+    "invalid_format_rate": 0.23,
+    "runtime_seconds": 258.49250507354736
+  },
+  "delta_pp": 35.5
+}

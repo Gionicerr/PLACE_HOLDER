@@ -1,7 +1,7 @@
 {
   "train_file": "data/teachers/full/sft/teacher_C.jsonl",
-  "validation_file": "runs/validation_full.jsonl",
-  "output_dir": "runs/C42/full",
+  "validation_file": null,
+  "output_dir": "results/C42/full",
   "model": "Qwen/Qwen2.5-0.5B-Instruct",
   "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
   "seed": 42,
@@ -20,7 +20,7 @@
   "gpu": "Tesla T4",
   "world_size": 1,
   "versions": {
-    "torch": "2.7.1",
+    "torch": "2.7.1+cu126",
     "transformers": "4.53.3",
     "peft": "0.16.0",
     "accelerate": "1.8.1"
